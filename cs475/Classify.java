@@ -69,7 +69,7 @@ public class Classify {
 		if (algorithm.equals("majority"))
 			predictor = new MajorityClassifier();
 		else if (algorithm.equals("even_odd"))
-			predictor = new EvenOddClassifier;
+			predictor = new EvenOddClassifier();
 		else {
 			System.out.println("Invalid training algorithm.");
 			return null;
