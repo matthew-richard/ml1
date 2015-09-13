@@ -64,15 +64,33 @@ public class Classify {
 	
 
 	private static Predictor train(List<Instance> instances, String algorithm) {
-		// TODO Train the model using "algorithm" on "data"
-		// TODO Evaluate the model
-		return null;
+		// Train the model using "algorithm" on "data"
+		Predictor predictor = null;
+		if (algorithm.equals("majority"))
+			predictor = new MajorityClassifier();
+		else if (algorithm.equals("even_odd"))
+			predictor = new EvenOddClassifier;
+		else {
+			System.out.println("Invalid training algorithm.");
+			return null;
+		}
+
+		// Evaluate the model
+		double accuracy = new AccuracyEvaluator().evaluate(instances, predictor);
+		System.out.println("Accuracy of " + algorithm + " algorithm on training data: " + accuracy);
+		return predictor;
 	}
 
 	private static void evaluateAndSavePredictions(Predictor predictor,
 			List<Instance> instances, String predictions_file) throws IOException {
 		PredictionsWriter writer = new PredictionsWriter(predictions_file);
-		// TODO Evaluate the model if labels are available. 
+
+		// Evaluate the model if labels are available.
+		Double firstLabel = Double.parseDouble(instances.get(0).getLabel().toString());
+		if (firstLabel != -1.0){
+			double accuracy = new AccuracyEvaluator().evaluate(instances, predictor);
+			System.out.println("Accuracy of algorithm: " + accuracy);
+		}
 		
 		for (Instance instance : instances) {
 			Label label = predictor.predict(instance);
