@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ClassificationLabel extends Label implements Serializable {
 
-	int label;
+	int label = -1;
 
 	public ClassificationLabel(int label) {
 		this.label = label;
@@ -17,9 +17,13 @@ public class ClassificationLabel extends Label implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj.getClass() == ClassificationLabel.class)
-			return label == ((ClassificationLabel)obj).label;
-		else return false;
+		if (!(obj instanceof ClassificationLabel))
+			return false;
+		return label == ((ClassificationLabel)obj).label;
 	}
 
+	@Override
+	public int hashCode() {
+		return ((Integer) ((Integer) label).hashCode()).hashCode();
+	}
 }
