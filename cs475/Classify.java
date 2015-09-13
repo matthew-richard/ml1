@@ -75,6 +75,9 @@ public class Classify {
 			return null;
 		}
 
+		// Learn the model
+		predictor.train(instances);
+
 		// Evaluate the model
 		double accuracy = new AccuracyEvaluator().evaluate(instances, predictor);
 		System.out.println("Accuracy of " + algorithm + " algorithm on training data: " + accuracy);
