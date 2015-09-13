@@ -15,4 +15,11 @@ public class ClassificationLabel extends Label implements Serializable {
 		return ((Integer)label).toString();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj.getClass() == ClassificationLabel.class)
+			return label == ((ClassificationLabel)obj).label;
+		else return false;
+	}
+
 }
