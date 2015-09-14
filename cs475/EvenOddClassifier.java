@@ -1,13 +1,8 @@
 package cs475;
 
-import com.sun.org.apache.xalan.internal.utils.FeatureManager;
-import javafx.util.Pair;
-
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-
-//TODO: Implement EvenOddClassifier
 
 /**
  * Created by matt on 9/13/15.

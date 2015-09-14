@@ -1,5 +1,8 @@
 package cs475;
 
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,9 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
-
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 
 public class BernoulliLikelihood {
 	static public LinkedList<Option> options = new LinkedList<Option>();

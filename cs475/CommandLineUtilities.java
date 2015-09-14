@@ -1,9 +1,11 @@
 package cs475;
 
-import java.io.*;
-import java.util.*;
-
 import org.apache.commons.cli.*;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Properties;
 
 /**
  * Some utilities for wrapping the Apache Jakarta CLI for command line parsing.

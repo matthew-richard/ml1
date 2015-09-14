@@ -1,18 +1,11 @@
 package cs475;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
+
+import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Classify {
 	static public LinkedList<Option> options = new LinkedList<Option>();
