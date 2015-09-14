@@ -1,6 +1,10 @@
 package cs475;
 
+import com.sun.org.apache.xalan.internal.utils.FeatureManager;
+import javafx.util.Pair;
+
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 //TODO: Implement EvenOddClassifier
@@ -11,11 +15,26 @@ import java.util.List;
 public class EvenOddClassifier extends Predictor implements Serializable {
     @Override
     public void train(List<Instance> instances) {
-
+        // Do nothing
     }
 
     @Override
     public Label predict(Instance instance) {
-        return null;
+        double even_sum = 0;
+        double odd_sum = 0;
+
+        Iterator<FeatureVector.Element> it = instance.getFeatureVector().nonzeroElementIterator();
+        while (it.hasNext()) {
+            FeatureVector.Element element = it.next();
+            if (element.getIndex() % 2 == 0)
+                even_sum += element.getValue();
+            else
+                odd_sum += element.getValue();
+        }
+
+        if (even_sum >= odd_sum)
+            return new ClassificationLabel(1);
+        else return new ClassificationLabel(0);
+
     }
 }
