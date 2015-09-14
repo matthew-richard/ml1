@@ -54,7 +54,7 @@ public class FeatureVector implements Serializable {
 			if (!(obj instanceof Element))
 				return false;
 
-			return entry.equals(((Element)obj).entry);
+			return entry.equals(((Element) obj).entry);
 		}
 	}
 
@@ -74,6 +74,11 @@ public class FeatureVector implements Serializable {
 		@Override
 		public Element next() {
 			return new Element (setIterator.next());
+		}
+
+		@Override
+		public void remove() {
+			setIterator.remove();
 		}
 	}
 
