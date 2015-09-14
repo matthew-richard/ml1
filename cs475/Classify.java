@@ -89,8 +89,7 @@ public class Classify {
 		PredictionsWriter writer = new PredictionsWriter(predictions_file);
 
 		// Evaluate the model if labels are available.
-		Double firstLabel = Double.parseDouble(instances.get(0).getLabel().toString());
-		if (firstLabel != -1.0){
+		if (instances.get(0).getLabel() != null){
 			double accuracy = new AccuracyEvaluator().evaluate(instances, predictor);
 			System.out.println("Accuracy of algorithm: " + accuracy);
 		}
