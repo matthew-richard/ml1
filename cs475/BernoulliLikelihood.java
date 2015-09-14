@@ -46,14 +46,24 @@ public class BernoulliLikelihood {
 	}
 	
 	public double computeMaximumLikelihood(ArrayList<Integer> data) {
-		// TODO: Fill in here
-		return 0.0;
+		int sum = 0;
+
+		for (int flipResult : data) {
+			sum += flipResult;
+		}
+
+		return (double) sum / (double) data.size();
 		
 	}
 	
 	public double computeLogLikelihood(ArrayList<Integer> data, double parameter) {
-		// TODO: Fill in here
-		return 0.0;
+		double sum = 0;
+
+		for (int flipResult: data) {
+			sum += flipResult * Math.log(parameter) + (1 - flipResult) * Math.log(1 - parameter);
+		}
+
+		return sum;
 	}
 	
 	public ArrayList<Integer> readData(String filename) throws FileNotFoundException {
