@@ -1,7 +1,5 @@
 package cs475;
 
-import javafx.util.Pair;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,11 +23,44 @@ public class FeatureVector implements Serializable {
 		return value;
 	}
 
-	public Iterator<Pair<Integer, Double>> nonzeroIterator() {
+	public Iterator<Element> nonzeroElementIterator() {
 		return new FeatureVectorIterator(this);
 	}
 
-	private static class FeatureVectorIterator implements Iterator<Pair<Integer, Double>> {
+	public static class Element {
+		Map.Entry<Integer, Double> entry;
+
+		public Element (Map.Entry<Integer, Double> entry) {
+			this.entry = entry;
+		}
+
+		public int getIndex() {
+			return entry.getKey();
+		}
+
+		public double getValue() {
+			return entry.getValue();
+		}
+
+		public void setValue(Double value) {
+			entry.setValue(value);
+		}
+
+		@Override
+		public int hashCode() {
+			return ((Integer)entry.hashCode()).hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (!(obj instanceof Element))
+				return false;
+
+			return entry.equals(((Element)obj).entry);
+		}
+	}
+
+	private static class FeatureVectorIterator implements Iterator<Element> {
 
 		protected Iterator<Map.Entry<Integer, Double>> setIterator = null;
 
@@ -43,9 +74,8 @@ public class FeatureVector implements Serializable {
 		}
 
 		@Override
-		public Pair<Integer, Double> next() {
-			Map.Entry<Integer, Double> entry = setIterator.next();
-			return new Pair<Integer,Double> (entry.getKey(), entry.getValue());
+		public Element next() {
+			return new Element (setIterator.next());
 		}
 	}
 
