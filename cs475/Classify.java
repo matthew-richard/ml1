@@ -63,6 +63,21 @@ public class Classify {
 			predictor = new MajorityClassifier();
 		else if (algorithm.equals("even_odd"))
 			predictor = new EvenOddClassifier();
+		else if (algorithm.equals("logistic_regression")) {
+			predictor = new LogisticRegressionClassifier();
+
+			// Apply optional algorithm-specific options
+			if (CommandLineUtilities.hasArg("sgd_eta0"))
+				((LogisticRegressionClassifier) predictor)
+						.setGradientDescentEta0(
+								CommandLineUtilities.getOptionValueAsFloat("sgd_eta0"));
+
+			if (CommandLineUtilities.hasArg("sgd_iterations"))
+				((LogisticRegressionClassifier) predictor)
+						.setGradientDescentNumIterations(
+								CommandLineUtilities.getOptionValueAsInt("sgd_iterations"));
+		}
+
 		else {
 			System.out.println("Invalid training algorithm.");
 			return null;
@@ -144,6 +159,8 @@ public class Classify {
 		registerOption("predictions_file", "String", true, "The predictions file to create.");
 		registerOption("algorithm", "String", true, "The name of the algorithm for training.");
 		registerOption("model_file", "String", true, "The name of the model file to create/load.");
+		registerOption("sgd_eta0", "double", true, "The constant scalar for learning rate in AdaGrad.");
+		registerOption("sgd_iterations", "int", true, "The number of SGD iterations.");
 		
 		// Other options will be added here.
 	}
