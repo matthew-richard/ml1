@@ -50,6 +50,7 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
     @Override
     public void train(List<Instance> instances) {
 
+        int numInstances = instances.size();
         int numFeatures = instances.get(0).getFeatureVector().getSize();
 
         // Our first guess for w is a vector of 0's
@@ -57,19 +58,22 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
 
         // For AdaGrad, remember (1-indexed) squared sums of partial gradients for each feature
         double[] partialSquareSums = new double[numFeatures + 1];
-        for (int i = 0; i < partialSquareSums.length; i++) partialSquareSums[i] = 0.0;
+        for (int i = 0; i < partialSquareSums.length; i++)
+            partialSquareSums[i] = 0.0;
 
         // Estimate w using stochastic gradient descent
-        for (int t = 1; t <= getGradientDescentNumIterations(); t++) {
+        for (int t = 1; t <= getGradientDescentNumIterations() * numInstances; t++) {
             // Current point we're working with
             Instance instance = instances.get((t - 1) % instances.size());
             int label = ((ClassificationLabel) instance.getLabel()).getValue();
             FeatureVector features = instance.getFeatureVector();
 
-            // Compute g(w*x_i)
-            double logistic = logistic(w.dot(instance.getFeatureVector()));
+            // Compute g(w*x_i) and g(-w*x_i)
+            double dot_product = w.dot(instance.getFeatureVector());
+            double logistic_positive = logistic(dot_product);
+            double logistic_negative = logistic(-dot_product);
 
-            // Update every element of w (elements that need updating are only
+            // Update each element of w (elements that need updating are only
             // those at nonzero indices in 'features')
             Iterator<FeatureVector.Element> it = features.nonzeroElementIterator();
             while (it.hasNext()) {
@@ -77,8 +81,8 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
                 int featureIndex = element.getIndex();
                 double featureValue = element.getValue();
 
-                double partialGradient = label * logistic * featureValue
-                        + (1 - label) * logistic * -featureValue;
+                double partialGradient = label * logistic_negative * featureValue
+                        + (1 - label) * logistic_positive * -featureValue;
 
                 // Update partialSquareSums
                 partialSquareSums[featureIndex] += Math.pow(partialGradient, 2);
