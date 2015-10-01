@@ -57,9 +57,7 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
         w = new FeatureVector(numFeatures);
 
         // For AdaGrad, remember (1-indexed) squared sums of partial gradients for each feature
-        double[] partialSquareSums = new double[numFeatures * 2];
-        for (int i = 0; i < partialSquareSums.length; i++)
-            partialSquareSums[i] = 0.0;
+        FeatureVector partialSquareSums = new FeatureVector();
 
         // Estimate w using stochastic gradient descent
         for (int t = 1; t <= getGradientDescentNumIterations() * numInstances; t++) {
@@ -85,10 +83,11 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
                         + (1 - label) * logistic_positive * -featureValue;
 
                 // Update partialSquareSums
-                partialSquareSums[featureIndex] += Math.pow(partialGradient, 2);
+                partialSquareSums.add(featureIndex,
+                        partialSquareSums.get(featureIndex) + Math.pow(partialGradient, 2));
 
                 // Compute AdaGrad eta
-                double denominator = Math.sqrt(1 + partialSquareSums[featureIndex]);
+                double denominator = Math.sqrt(1 + partialSquareSums.get(featureIndex));
                 double step = getGradientDescentEta0() / denominator;
 
                 // Update coefficient in w
