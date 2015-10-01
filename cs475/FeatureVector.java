@@ -1,17 +1,29 @@
 package cs475;
 
+import javafx.collections.transformation.SortedList;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedMap;
 
 public class FeatureVector implements Serializable {
 
     // Nonzero vector elements
 	private Map<Integer, Double> supports = new HashMap<>();
 
+	int size = 0;
+	public int getSize() {
+		return size;
+	}
+
+
 	public void add(int index, double value) {
         supports.put(index, value);
+
+		if (index > size)
+			size = index;
 	}
 
 	public int getNumSupports() { return supports.size(); }
@@ -25,6 +37,21 @@ public class FeatureVector implements Serializable {
 
 	public Iterator<Element> nonzeroElementIterator() {
 		return new FeatureVectorIterator(this);
+	}
+
+	public double dot (FeatureVector other) throws Exception {
+		double result = 0.0;
+
+		Iterator<Element> it = this.nonzeroElementIterator();
+		while (it.hasNext()) {
+			Element our_element = it.next();
+			double our_value = our_element.getValue();
+			double their_value = other.get(our_element.getIndex());
+
+			result += our_value * their_value;
+		}
+
+		return result;
 	}
 
 	public static class Element {

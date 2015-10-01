@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class LogisticRegressionClassifier extends Predictor implements Serializable {
 
-    private List<Double> w = null;
+    private FeatureVector w = null;
 
     private double gradientDescentEta0; //sgd_eta0
     private int gradientDescentNumIterations; //sgd_iterations
@@ -30,18 +30,31 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
         this.gradientDescentEta0 = gradientDescentEta0;
     }
 
-
-    @Override
-    public void train(List<Instance> instances) {
+    public LogisticRegressionClassifier () {
         // initialize sgd params to default values
         gradientDescentEta0 = 1.0;
         gradientDescentNumIterations = 20;
 
-        w = new ArrayList<Double>(instances.get(0).getFeatureVector().getNumSupports());
+        w = new FeatureVector();
+    }
 
-        // initialize w to first guess
+
+    @Override
+    public void train(List<Instance> instances) {
+
+        // our first guess is a vector of 0's
+        w = new FeatureVector();
 
         // estimate w using stochastic gradient descent
+
+        for (int t = 1; t <= getGradientDescentNumIterations(); t++) {
+            // current point we're working with
+            Instance instance = instances.get((t - 1) % instances.size());
+
+
+            // update every element of w
+            for ()
+        }
 
     }
 
