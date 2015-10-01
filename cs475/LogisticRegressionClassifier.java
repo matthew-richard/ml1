@@ -2,6 +2,7 @@ package cs475;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,34 +33,74 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
 
     public LogisticRegressionClassifier () {
         // initialize sgd params to default values
-        gradientDescentEta0 = 1.0;
+        gradientDescentEta0 = 0.01;
         gradientDescentNumIterations = 20;
 
         w = new FeatureVector();
+    }
+
+    /*
+     * Logistic function.
+     */
+    private double logistic(double x) {
+        return 1.0 / (1.0 + Math.exp(-x));
     }
 
 
     @Override
     public void train(List<Instance> instances) {
 
-        // our first guess is a vector of 0's
-        w = new FeatureVector();
+        int numFeatures = instances.get(0).getFeatureVector().getSize();
 
-        // estimate w using stochastic gradient descent
+        // Our first guess for w is a vector of 0's
+        w = new FeatureVector(numFeatures);
 
+        // For AdaGrad, remember (1-indexed) squared sums of partial gradients for each feature
+        double[] partialSquareSums = new double[numFeatures + 1];
+        for (int i = 0; i < partialSquareSums.length; i++) partialSquareSums[i] = 0.0;
+
+        // Estimate w using stochastic gradient descent
         for (int t = 1; t <= getGradientDescentNumIterations(); t++) {
-            // current point we're working with
+            // Current point we're working with
             Instance instance = instances.get((t - 1) % instances.size());
+            int label = ((ClassificationLabel) instance.getLabel()).getValue();
+            FeatureVector features = instance.getFeatureVector();
 
+            // Compute g(w*x_i)
+            double logistic = logistic(w.dot(instance.getFeatureVector()));
 
-            // update every element of w
-            for ()
+            // Update every element of w (elements that need updating are only
+            // those at nonzero indices in 'features')
+            Iterator<FeatureVector.Element> it = features.nonzeroElementIterator();
+            while (it.hasNext()) {
+                FeatureVector.Element element = it.next();
+                int featureIndex = element.getIndex();
+                double featureValue = element.getValue();
+
+                double partialGradient = label * logistic * featureValue
+                        + (1 - label) * logistic * -featureValue;
+
+                // Update partialSquareSums
+                partialSquareSums[featureIndex] += Math.pow(partialGradient, 2);
+
+                // Compute AdaGrad eta
+                double denominator = Math.sqrt(1 + partialSquareSums[featureIndex]);
+                double step = getGradientDescentEta0() / denominator;
+
+                // Update coefficient in w
+                w.add(featureIndex, w.get(featureIndex) + step * partialGradient);
+            }
         }
 
     }
 
     @Override
     public Label predict(Instance instance) {
-        return null;
+        // Compute g(w*x_i)
+        double logistic = logistic(w.dot(instance.getFeatureVector()));
+
+        if (logistic >= 0.5)
+            return new ClassificationLabel(1);
+        else return new ClassificationLabel(0);
     }
 }
