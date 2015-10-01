@@ -57,7 +57,7 @@ public class LogisticRegressionClassifier extends Predictor implements Serializa
         w = new FeatureVector(numFeatures);
 
         // For AdaGrad, remember (1-indexed) squared sums of partial gradients for each feature
-        double[] partialSquareSums = new double[numFeatures + 1];
+        double[] partialSquareSums = new double[numFeatures * 2];
         for (int i = 0; i < partialSquareSums.length; i++)
             partialSquareSums[i] = 0.0;
 
