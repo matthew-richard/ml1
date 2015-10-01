@@ -13,10 +13,14 @@ public class FeatureVector implements Serializable {
     // Nonzero vector elements
 	private Map<Integer, Double> supports = new HashMap<>();
 
-	int size = 0;
+	private int size = 0;
 	public int getSize() {
 		return size;
 	}
+
+	public FeatureVector() {};
+
+	public FeatureVector(int size) { this.size = size; }
 
 
 	public void add(int index, double value) {
@@ -25,6 +29,12 @@ public class FeatureVector implements Serializable {
 		if (index > size)
 			size = index;
 	}
+
+	/*public void set (int index, double value) {
+		if (index > size)
+
+		add(index, value);
+	}*/
 
 	public int getNumSupports() { return supports.size(); }
 	
@@ -39,7 +49,7 @@ public class FeatureVector implements Serializable {
 		return new FeatureVectorIterator(this);
 	}
 
-	public double dot (FeatureVector other) throws Exception {
+	public double dot (FeatureVector other) {
 		double result = 0.0;
 
 		Iterator<Element> it = this.nonzeroElementIterator();
