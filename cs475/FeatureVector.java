@@ -13,6 +13,8 @@ public class FeatureVector implements Serializable {
 	public void add(int index, double value) {
         supports.put(index, value);
 	}
+
+	public int getNumSupports() { return supports.size(); }
 	
 	public double get(int index) {
         Double value = supports.get(index);
