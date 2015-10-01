@@ -1,12 +1,9 @@
 package cs475;
 
-import javafx.collections.transformation.SortedList;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.SortedMap;
 
 public class FeatureVector implements Serializable {
 
