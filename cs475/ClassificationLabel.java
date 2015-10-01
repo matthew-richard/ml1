@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class ClassificationLabel extends Label implements Serializable {
 
 	int label = -1;
+	public int getValue() { return label; }
+
 
 	public ClassificationLabel(int label) {
 		this.label = label;

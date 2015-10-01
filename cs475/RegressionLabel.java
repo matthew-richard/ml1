@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class RegressionLabel extends Label implements Serializable {
 
 	double label = -1;
+	public double getValue() { return label; }
 
 	public RegressionLabel(double label) {
 		this.label = label;
